@@ -38,9 +38,10 @@ public class SecurityConfig {
         CorsConfiguration configuration =
                 new CorsConfiguration();
 
-        configuration.setAllowedOrigins(
-                List.of("http://localhost:3000")
-        );
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:3000",
+                "https://airline-booking-frontend-two.vercel.app"
+        ));
 
         configuration.setAllowedMethods(
                 List.of(

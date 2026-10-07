@@ -6,7 +6,7 @@ import com.airline.booking.dto.LoginResponse;
 import com.airline.booking.dto.RegisterRequest;
 import com.airline.booking.dto.UserResponse;
 import com.airline.booking.service.AuthService;
-import jakarta.servlet.http.Cookie;
+import org.springframework.http.HttpHeaders;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -49,11 +49,19 @@ public class AuthController {
         LoginResponse loginResponse =
                 authService.login(request);
 
-        ResponseCookie cookie = ResponseCookie
-                .from("access_token", loginResponse.getAccessToken())
+//        ResponseCookie cookie = ResponseCookie
+//                .from("access_token", loginResponse.getAccessToken())
+//                .httpOnly(true)
+//                .secure(false) // localhost HTTP ke liye
+//                .sameSite("Lax")
+//                .path("/")
+//                .maxAge(Duration.ofDays(1))
+//                .build();
+
+        ResponseCookie cookie = ResponseCookie.from("access_token", loginResponse.getAccessToken())
                 .httpOnly(true)
-                .secure(false) // localhost HTTP ke liye
-                .sameSite("Lax")
+                .secure(true)
+                .sameSite("None")
                 .path("/")
                 .maxAge(Duration.ofDays(1))
                 .build();
@@ -74,15 +82,15 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Void>> logout(
             HttpServletResponse response
     ) {
+        ResponseCookie cookie = ResponseCookie.from("access_token", "")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .path("/")
+                .maxAge(Duration.ZERO)
+                .build();
 
-        Cookie cookie = new Cookie("access_token", null);
-
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false); // true in production with HTTPS
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-
-        response.addCookie(cookie);
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         return ResponseEntity.ok(
                 new ApiResponse<>(
