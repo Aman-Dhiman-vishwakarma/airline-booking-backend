@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: airline-booking
+
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+jwt:
+  secret: ${JWT_SECRET}
+
+server:
+  error:
+    include-message: always
+
+
+
+#spring:
+#  application:
+#    name: airline-booking
+#
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/airline_booking
+#    username: postgres
+#    password: postgres
+#    driver-class-name: org.postgresql.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#
+#jwt:
+#  secret: ${JWT_SECRET}
+#
+#server:
+#  error:
+#    include-message: always
